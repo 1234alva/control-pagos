@@ -6,6 +6,9 @@ app.use(express.json());
 
 // Importar conexión a la base de datos
 const client = require("./db");
+const usuariosRoutes = require("./routes/usuarios");
+app.use("/usuarios", usuariosRoutes);
+
 
 // Importar rutas
 const serviciosRoutes = require("./routes/servicios");
