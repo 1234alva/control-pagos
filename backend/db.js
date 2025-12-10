@@ -1,12 +1,12 @@
 const { Client } = require("pg");
 
 const client = new Client({
-    host: "postgres_db",        // nombre del servicio en docker-compose
+    host: "db",              // nombre del servicio en docker-compose
     port: 5432,
     user: "postgres",
-    password: "123qwe",
+    password: "postgres",    // debe coincidir con docker-compose.yml
     database: "control_pagos"
 });
 
-client.connect()
+client.connect();
 module.exports = client;

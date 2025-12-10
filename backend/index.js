@@ -6,15 +6,17 @@ app.use(express.json());
 
 // Importar conexión a la base de datos
 const client = require("./db");
-const usuariosRoutes = require("./routes/usuarios");
-app.use("/usuarios", usuariosRoutes);
-
 
 // Importar rutas
+const usuariosRoutes = require("./routes/usuarios");
 const serviciosRoutes = require("./routes/servicios");
 const pagosRoutes = require("./routes/pagos");
 
+const usuarioPagosRoutes = require("./routes/usuario_pagos");
+
 // Usar rutas
+app.use("/usuarios", usuariosRoutes);       // CRUD de usuarios
+app.use("/usuarios", usuarioPagosRoutes);   // Subruta /usuarios/:id/pagos
 app.use("/servicios", serviciosRoutes);
 app.use("/pagos", pagosRoutes);
 
