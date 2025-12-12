@@ -8,17 +8,18 @@ app.use(express.json());
 const client = require("./db");
 
 // Importar rutas
-const usuariosRoutes = require("./routes/usuarios");
-const serviciosRoutes = require("./routes/servicios");
-const pagosRoutes = require("./routes/pagos");
-
-const usuarioPagosRoutes = require("./routes/usuario_pagos");
+const usuariosRoutes = require("./routes/usuarios");          // CRUD de usuarios
+const serviciosRoutes = require("./routes/servicios");        // CRUD de servicios
+const pagosRoutes = require("./routes/pagos");                // CRUD general de pagos
+const usuarioPagosRoutes = require("./routes/usuario_pagos"); // Subruta /usuarios/:id/pagos
+const authRoutes = require("./routes/auth");
 
 // Usar rutas
-app.use("/usuarios", usuariosRoutes);       // CRUD de usuarios
-app.use("/usuarios", usuarioPagosRoutes);   // Subruta /usuarios/:id/pagos
-app.use("/servicios", serviciosRoutes);
-app.use("/pagos", pagosRoutes);
+app.use("/usuarios", usuariosRoutes);        // CRUD de usuarios
+app.use("/usuarios", usuarioPagosRoutes);    // Subruta /usuarios/:id/pagos
+app.use("/servicios", serviciosRoutes);      // CRUD de servicios
+app.use("/pagos", pagosRoutes);   
+app.use("/auth", authRoutes);           // CRUD general de pagos
 
 // Endpoint de prueba
 app.get("/", (req, res) => {
