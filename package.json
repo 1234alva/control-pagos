@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/1234alva/control-pagos/issues"
   },
-  "homepage": "https://github.com/1234alva/control-pagos#readme"
+  "homepage": "https://github.com/1234alva/control-pagos#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "reflect-metadata": "^0.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
 }

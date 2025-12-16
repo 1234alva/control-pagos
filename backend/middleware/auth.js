@@ -1,16 +1,16 @@
-// middleware/auth.js
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
-function verificarToken(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: "Token requerido" });
+export function verificarToken(req, res, next) {
+  const header = req.headers["authorization"];
+  if (!header) return res.status(403).json({ error: "Token requerido" });
 
-  const token = authHeader.split(" ")[1];
-  jwt.verify(token, "secreto123", (err, decoded) => {
-    if (err) return res.status(403).json({ error: "Token inválido" });
-    req.usuarioId = decoded.id;
+  const token = header.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, "secreto_jwt");
+    req.userId = decoded.id;
     next();
-  });
+  } catch (error) {
+    return res.status(401).json({ error: "Token inválido" });
+  }
 }
-
-module.exports = verificarToken;
+export default verificarToken;

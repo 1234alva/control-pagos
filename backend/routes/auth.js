@@ -1,59 +1,50 @@
-const express = require("express");
-const router = express.Router();
-const client = require("../db");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import client from "../db.js";
 
-// Registro de usuario
+const router = express.Router();
+
+// 📌 Registro
 router.post("/register", async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
-
-    // Encriptar contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await client.query(
-      `INSERT INTO usuarios (nombre, email, password)
-       VALUES ($1, $2, $3) RETURNING id, nombre, email`,
+      "INSERT INTO usuarios (nombre, email, password) VALUES ($1, $2, $3) RETURNING *",
       [nombre, email, hashedPassword]
     );
 
-    res.status(201).json(result.rows[0]);
+    res.status(201).json({ message: "Usuario registrado ✅", usuario: result.rows[0] });
   } catch (err) {
     console.error("Error en registro:", err);
     res.status(500).json({ error: "Error al registrar usuario" });
   }
 });
 
-// Login de usuario
+// 📌 Login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const result = await client.query(
-      `SELECT * FROM usuarios WHERE email = $1`,
-      [email]
-    );
-
+    const result = await client.query("SELECT * FROM usuarios WHERE email = $1", [email]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
     const usuario = result.rows[0];
-    const valid = await bcrypt.compare(password, usuario.password);
-
-    if (!valid) {
-      return res.status(401).json({ error: "Contraseña incorrecta" });
+    const valido = await bcrypt.compare(password, usuario.password);
+    if (!valido) {
+      return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
-    // Generar token JWT
-    const token = jwt.sign({ id: usuario.id }, "secreto123", { expiresIn: "1h" });
-
-    res.json({ token });
+    const token = jwt.sign({ id: usuario.id }, "secreto_jwt", { expiresIn: "1h" });
+    res.json({ message: "Login exitoso ✅", token });
   } catch (err) {
     console.error("Error en login:", err);
     res.status(500).json({ error: "Error al iniciar sesión" });
   }
 });
 
-module.exports = router;
+export default router;

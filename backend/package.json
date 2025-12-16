@@ -2,10 +2,11 @@
   "name": "control-pagos-backend",
   "version": "1.0.0",
   "description": "Backend para sistema de control de pagos",
-  "main": "index.js",
+  "main": "server.js",
+  "type": "module",       
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "Albaro",
@@ -15,7 +16,8 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.16.3",
-    "typeorm": "^0.3.28"
+    "typeorm": "^0.3.28",
+    "reflect-metadata": "^0.1.13"  
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
